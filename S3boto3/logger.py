@@ -3,7 +3,7 @@ from logging.handlers import RotatingFileHandler
 
 def init_logger():
     logger = logging.getLogger('my_logger')
-    logger.setLevel(logging.ERROR)
+    logger.setLevel(logging.DEBUG)
 
     consoleFormatter = logging.Formatter("%(asctime)s - %(name)s %(levelname)s- %(message)s", datefmt="%Y-%M-%D %H:%M:%S") # setting logging format
 
