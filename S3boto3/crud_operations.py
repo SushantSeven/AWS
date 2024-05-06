@@ -44,19 +44,19 @@ def delete_bucket():
 
 # upload a file in bucket
 def upload_file():
-    bucket_name = 'sushi-bucket'
+    bucket_name = 'sus-bucket-yt'
     s3.upload_file(Filename='customers-100.csv', Bucket=bucket_name, Key='customers-100.csv')
     log.info('File uploaded')
 
 # delete a file in bucket
 def delete_file():
-    bucket_name = 'sushi-bucket'
+    bucket_name = 'sus-bucket-yt'
     s3.delete_object(Bucket=bucket_name, Key='customers-100.csv')
     log.info('File deleted')
 
 # list all files in bucket
 def list_all_objects():
-    bucket_name = 'sushi-bucket'
+    bucket_name = 'sus-bucket-yt'
     response = s3.list_objects_v2(Bucket=bucket_name)
     if 'Contents' in response:
         for obj in response['Contents']:
@@ -66,7 +66,7 @@ def list_all_objects():
 
 # get file from bucket
 def get_file():
-    bucket_name = 'sushi-bucket'
+    bucket_name = 'sus-bucket-yt'
     object_key = 'customers-100.csv'
     
     try:
@@ -83,7 +83,7 @@ def get_file():
 
 # download a file from bucket
 def download_file():
-    bucket_name = 'sushi-bucket'
+    bucket_name = 'sus-bucket-yt'
     object_key = 'customers-100.csv'
     local_file_path = 'D:/customers.csv'
     try:
@@ -99,6 +99,6 @@ if __name__ == "__main__":
     # delete_bucket()
     # upload_file()
     # delete_file()
-    # list_all_objects()
-    get_file()
+    list_all_objects()
+    # get_file()
     # download_file()
