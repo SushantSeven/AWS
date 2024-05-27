@@ -1,6 +1,9 @@
 import psycopg2
 import pandas as pd
 import crud_logger
+import os
+from dotenv import load_dotenv
+load_dotenv()
 
 
 log = crud_logger.init_logger()
@@ -10,8 +13,9 @@ log = crud_logger.init_logger()
 RS_HOST = "my-serverless-workgroup.431674898822.ap-southeast-1.redshift-serverless.amazonaws.com"
 RS_PORT = "5439"
 RS_DATABASE = "mydatabase"
-RS_USER = "devuser"
-RS_PASSWORD = "Devdbpass7"
+RS_USER = os.environ.get('RS_USER')
+RS_PASSWORD = os.environ.get('RS_PASSWORD')
+
 
 con = psycopg2.connect(host = RS_HOST,
                        port = RS_PORT,
@@ -21,9 +25,18 @@ con = psycopg2.connect(host = RS_HOST,
 
 cursor = con.cursor()
 
+def create_schema():
+    try:   
+        cursor.execute('create schema myschema;')
+    except Exception as e:
+        log.exception(e)
+    else:
+        con.commit()
+        log.info('schema created')
+
 def create_table():
     try:   
-        cursor.execute('create table public.emp(id int, name varchar(50))')
+        cursor.execute('create table myschema.emp(id int, name varchar(50))')
     except Exception as e:
         log.exception(e)
     else:
@@ -35,7 +48,7 @@ def insert_data():
    
     # Define the COPY command
     copy_command = """
-       COPY mydatabase.public.emp FROM 's3://sushi-bucket/emp.csv' IAM_ROLE 'arn:aws:iam::431674898822:role/redshifS3Access' FORMAT AS CSV DELIMITER ',' QUOTE '"' IGNOREHEADER 1 REGION AS 'ap-southeast-1'
+       COPY mydatabase.myschema.emp FROM 's3://sushi-bucket/emp.csv' IAM_ROLE 'arn:aws:iam::431674898822:role/redshifS3Access' FORMAT AS CSV DELIMITER ',' QUOTE '"' IGNOREHEADER 1 REGION AS 'ap-southeast-1'
     """
 
     # Execute the COPY command
@@ -60,7 +73,8 @@ def select_data():
             print(row)
 
 if __name__ == "__main__":
-    # create_table()
+    # create_schema()
+    create_table()
     # insert_data()
-    select_data()
+    # select_data()
 
