@@ -1,6 +1,8 @@
 import boto3
 import logger
-
+import os 
+from dotenv import load_dotenv
+load_dotenv()
 # Initialize the Redshift client
 redshift = boto3.client('redshift-serverless')
 
@@ -8,8 +10,8 @@ log = logger.init_logger()
 
 def create_namespace(namespace_name, db_name):
     try:
-        response = redshift.create_namespace(   adminUserPassword='Devdbpass7',
-                                                adminUsername='devuser',
+        response = redshift.create_namespace(   adminUserPassword=os.environ.get('RS_PASSWORD'),
+                                                adminUsername= os.environ.get('RS_USER'),
                                                 dbName=db_name,
                                                 namespaceName=namespace_name,
                                                 manageAdminPassword=False,
