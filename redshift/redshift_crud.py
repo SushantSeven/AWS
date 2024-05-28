@@ -45,7 +45,6 @@ def create_table():
 
 
 def insert_data():
-   
     # Define the COPY command
     copy_command = """
        COPY mydatabase.myschema.emp FROM 's3://sushi-bucket/emp.csv' IAM_ROLE 'arn:aws:iam::431674898822:role/redshifS3Access' FORMAT AS CSV DELIMITER ',' QUOTE '"' IGNOREHEADER 1 REGION AS 'ap-southeast-1'
